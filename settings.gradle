@@ -1,0 +1,43 @@
+import org.gradle.api.initialization.resolve.RepositoriesMode
+
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+
+        mavenLocal()
+        maven {
+            url uri('./repo')
+        }
+    }
+}
+
+//gradle7以前写法
+//buildscript {
+//    repositories {
+//        gradlePluginPortal()
+//        google()
+//        mavenCentral()
+//
+//        mavenLocal()
+//        maven {
+//            url uri('./repo')
+//        }
+//    }
+//    dependencies {
+//        //group:artifactId:version (和我们上面发布时定义的要一致)
+//        classpath 'com.dev.wucm:jiagu:1.0.0'
+//    }
+//}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "JiaguPlugin"
+include ':app'
+include ':JiaguPlugin'

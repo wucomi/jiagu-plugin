@@ -1,0 +1,60 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation gradleApi()
+    //引入android插件的api。注意这里是插件的版本号，和gradle不是一个版本号
+    implementation "com.android.tools.build:gradle:4.1.3"
+}
+
+// 组名，可以理解为插件的存放目录
+group = 'com.dev.wucm'
+description = '360自动加固插件'
+version = '1.0.0'
+
+//java-gradle-plugin插件扩展属性
+gradlePlugin {
+    plugins {
+        JiaguPlugin {
+            id = 'com.dev.wucm.jiagu'                           //定义插件id
+            implementationClass = 'com.wucm.jiagu.JiaguPlugin'  //定义插件实现类
+        }
+    }
+}
+
+//maven-publish插件扩展属性
+publishing {
+    //插件存储库
+    repositories {
+        //本地发布
+        maven {
+            url uri('../repo')
+        }
+        //远程发步
+//        maven {
+//            allowInsecureProtocol true
+//            url = 'http://161.117.195.45:6677/repository/myPlugin/'
+//            credentials {
+//                it.username = "username"
+//                it.password = "pwd"
+//            }
+//        }
+    }
+    //出版物
+    publications {
+        JiaguPlugin(MavenPublication) {
+            artifactId 'jiagu'
+            from components.java
+        }
+    }
+}
